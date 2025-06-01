@@ -23,6 +23,7 @@
         body {
             background-color: #f9f9f9;
             color: var(--dark-color);
+            padding-bottom: 100px;
         }
         
         .container {
@@ -39,10 +40,11 @@
             border-radius: 0 0 20px 20px;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
             margin-bottom: 30px;
+            position: relative;
         }
         
         .logo {
-            font-size: 2.5rem;
+            font-size: 2rem;
             font-weight: bold;
             margin-bottom: 10px;
             display: flex;
@@ -78,10 +80,6 @@
             border-radius: 30px;
             display: flex;
             align-items: center;
-        }
-        
-        .delivery-option i {
-            margin-left: 10px;
         }
         
         .menu-container {
@@ -215,8 +213,8 @@
         .cart-sidebar {
             position: fixed;
             top: 0;
-            right: -400px;
-            width: 400px;
+            right: -100%;
+            width: 100%;
             height: 100%;
             background-color: white;
             box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
@@ -341,10 +339,11 @@
         .delivery-option-btn {
             background-color: #eee;
             border: none;
-            padding: 10px 20px;
+            padding: 10px 15px;
             border-radius: 30px;
             cursor: pointer;
             transition: all 0.3s ease;
+            font-size: 0.9rem;
         }
         
         .delivery-option-btn.active {
@@ -352,18 +351,85 @@
             color: white;
         }
         
+        .customer-info {
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            margin: 15px 0;
+        }
+        
+        .customer-info input {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+        
+        /* رسائل التنبيه */
+        .alert {
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+            display: none;
+        }
+        
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .alert-error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        /* تحسينات للجوال */
         @media (max-width: 768px) {
+            .logo {
+                font-size: 1.5rem;
+            }
+            
             .menu-container {
                 grid-template-columns: 1fr;
             }
             
-            .cart-sidebar {
-                width: 100%;
-                right: -100%;
+            .delivery-option-btn {
+                padding: 8px 12px;
+                font-size: 0.8rem;
             }
             
-            .cart-sidebar.open {
-                right: 0;
+            .cart-sidebar {
+                width: 100%;
+            }
+            
+            .cart-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .cart-item-quantity {
+                margin-top: 10px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .header-info {
+                flex-direction: column;
+                align-items: center;
+                gap: 10px;
+            }
+            
+            .table-number, .delivery-option {
+                width: 80%;
+                justify-content: center;
+            }
+            
+            .logo {
+                font-size: 1.3rem;
             }
         }
     </style>
@@ -391,6 +457,8 @@
     <div class="container">
         <h1 style="text-align: center; margin-bottom: 30px; color: var(--primary-color);">قائمة الطعام</h1>
         
+        <div id="alertMessage" class="alert" style="display: none;"></div>
+        
         <div class="menu-container">
             <!-- المندي -->
             <div class="menu-category">
@@ -402,7 +470,7 @@
                             <div class="item-desc">دجاج مطبوخ على الفحم مع أرز المندي</div>
                             <div class="item-price">25 ر.س</div>
                         </div>
-                        <button class="add-to-cart" onclick="addToCart('مندي دجاج', 25)">
+                        <button class="add-to-cart" onclick="addToCart('مندي دجاج', 25, 'مندي')">
                             <i class="fas fa-plus"></i>
                         </button>
                     </div>
@@ -412,44 +480,7 @@
                             <div class="item-desc">لحم غنم مطبوخ على الفحم مع أرز المندي</div>
                             <div class="item-price">35 ر.س</div>
                         </div>
-                        <button class="add-to-cart" onclick="addToCart('مندي لحم', 35)">
-                            <i class="fas fa-plus"></i>
-                        </button>
-                    </div>
-                    <div class="menu-item">
-                        <div class="item-info">
-                            <div class="item-name">مندي كبسة</div>
-                            <div class="item-desc">خليط من الدجاج واللحم مع أرز المندي</div>
-                            <div class="item-price">40 ر.س</div>
-                        </div>
-                        <button class="add-to-cart" onclick="addToCart('مندي كبسة', 40)">
-                            <i class="fas fa-plus"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- المضغوط -->
-            <div class="menu-category">
-                <div class="category-header">المضغوط</div>
-                <div class="menu-items">
-                    <div class="menu-item">
-                        <div class="item-info">
-                            <div class="item-name">مضغوط دجاج</div>
-                            <div class="item-desc">دجاج مضغوط مع أرز البسمتي</div>
-                            <div class="item-price">30 ر.س</div>
-                        </div>
-                        <button class="add-to-cart" onclick="addToCart('مضغوط دجاج', 30)">
-                            <i class="fas fa-plus"></i>
-                        </button>
-                    </div>
-                    <div class="menu-item">
-                        <div class="item-info">
-                            <div class="item-name">مضغوط لحم</div>
-                            <div class="item-desc">لحم غنم مضغوط مع أرز البسمتي</div>
-                            <div class="item-price">40 ر.س</div>
-                        </div>
-                        <button class="add-to-cart" onclick="addToCart('مضغوط لحم', 40)">
+                        <button class="add-to-cart" onclick="addToCart('مندي لحم', 35, 'مندي')">
                             <i class="fas fa-plus"></i>
                         </button>
                     </div>
@@ -466,7 +497,7 @@
                             <div class="item-desc">قطع دجاج مشوية على الفحم</div>
                             <div class="item-price">20 ر.س</div>
                         </div>
-                        <button class="add-to-cart" onclick="addToCart('شيش طاووق', 20)">
+                        <button class="add-to-cart" onclick="addToCart('شيش طاووق', 20, 'مشويات')">
                             <i class="fas fa-plus"></i>
                         </button>
                     </div>
@@ -476,17 +507,7 @@
                             <div class="item-desc">كباب لحم غنم مشوي</div>
                             <div class="item-price">25 ر.س</div>
                         </div>
-                        <button class="add-to-cart" onclick="addToCart('كباب', 25)">
-                            <i class="fas fa-plus"></i>
-                        </button>
-                    </div>
-                    <div class="menu-item">
-                        <div class="item-info">
-                            <div class="item-name">مشكل مشاوي</div>
-                            <div class="item-desc">خليط من الشيش طاووق والكباب</div>
-                            <div class="item-price">35 ر.س</div>
-                        </div>
-                        <button class="add-to-cart" onclick="addToCart('مشكل مشاوي', 35)">
+                        <button class="add-to-cart" onclick="addToCart('كباب', 25, 'مشويات')">
                             <i class="fas fa-plus"></i>
                         </button>
                     </div>
@@ -503,7 +524,7 @@
                             <div class="item-desc">خضروات طازجة مع صلصة الزيتون</div>
                             <div class="item-price">10 ر.س</div>
                         </div>
-                        <button class="add-to-cart" onclick="addToCart('سلطة خضراء', 10)">
+                        <button class="add-to-cart" onclick="addToCart('سلطة خضراء', 10, 'مقبلات')">
                             <i class="fas fa-plus"></i>
                         </button>
                     </div>
@@ -513,17 +534,7 @@
                             <div class="item-desc">حمص مع زيت الزيتون</div>
                             <div class="item-price">8 ر.س</div>
                         </div>
-                        <button class="add-to-cart" onclick="addToCart('حمص', 8)">
-                            <i class="fas fa-plus"></i>
-                        </button>
-                    </div>
-                    <div class="menu-item">
-                        <div class="item-info">
-                            <div class="item-name">متبل باذنجان</div>
-                            <div class="item-desc">باذنجان مشوي مع الطحينة</div>
-                            <div class="item-price">12 ر.س</div>
-                        </div>
-                        <button class="add-to-cart" onclick="addToCart('متبل باذنجان', 12)">
+                        <button class="add-to-cart" onclick="addToCart('حمص', 8, 'مقبلات')">
                             <i class="fas fa-plus"></i>
                         </button>
                     </div>
@@ -540,17 +551,7 @@
                             <div class="item-desc">عصير ليمون طازج</div>
                             <div class="item-price">7 ر.س</div>
                         </div>
-                        <button class="add-to-cart" onclick="addToCart('عصير ليمون', 7)">
-                            <i class="fas fa-plus"></i>
-                        </button>
-                    </div>
-                    <div class="menu-item">
-                        <div class="item-info">
-                            <div class="item-name">عصير برتقال</div>
-                            <div class="item-desc">عصير برتقال طازج</div>
-                            <div class="item-price">7 ر.س</div>
-                        </div>
-                        <button class="add-to-cart" onclick="addToCart('عصير برتقال', 7)">
+                        <button class="add-to-cart" onclick="addToCart('عصير ليمون', 7, 'مشروبات')">
                             <i class="fas fa-plus"></i>
                         </button>
                     </div>
@@ -560,7 +561,7 @@
                             <div class="item-desc">بيبسي/سفن أب/ميرندا</div>
                             <div class="item-price">5 ر.س</div>
                         </div>
-                        <button class="add-to-cart" onclick="addToCart('مشروب غازي', 5)">
+                        <button class="add-to-cart" onclick="addToCart('مشروب غازي', 5, 'مشروبات')">
                             <i class="fas fa-plus"></i>
                         </button>
                     </div>
@@ -585,16 +586,23 @@
         </div>
         
         <div class="delivery-options">
-            <button class="delivery-option-btn active" onclick="setDeliveryOption('store')">
-                <i class="fas fa-store"></i> استلام من المحل
+            <button class="delivery-option-btn active" id="pickupBtn" onclick="setDeliveryOption('store')">
+                <i class="fas fa-store"></i> استلام
             </button>
-            <button class="delivery-option-btn" onclick="setDeliveryOption('delivery')">
+            <button class="delivery-option-btn" id="deliveryBtn" onclick="setDeliveryOption('delivery')">
                 <i class="fas fa-truck"></i> توصيل
             </button>
         </div>
         
+        <div class="customer-info" id="customerInfo" style="display: none;">
+            <h4>معلومات العميل</h4>
+            <input type="text" id="customerName" placeholder="الاسم الكامل">
+            <input type="tel" id="customerPhone" placeholder="رقم الهاتف">
+            <input type="text" id="customerAddress" placeholder="عنوان التوصيل">
+            <textarea id="customerNotes" placeholder="ملاحظات (اختياري)" style="width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ddd; border-radius: 5px; font-size: 1rem;"></textarea>
+        </div>
+        
         <div class="cart-items" id="cartItems">
-            <!-- سيتم إضافة العناصر هنا عبر JavaScript -->
             <div style="text-align: center; padding: 20px; color: #666;" id="emptyCartMessage">
                 السلة فارغة
             </div>
@@ -612,9 +620,10 @@
     </div>
     
     <script>
-        // متغيرات السلة
+        // متغيرات التطبيق
         let cart = [];
         let deliveryOption = 'store';
+        let orders = JSON.parse(localStorage.getItem('restaurantOrders')) || [];
         
         // تحديث عدد العناصر في السلة
         function updateCartCount() {
@@ -626,6 +635,7 @@
         function updateCartTotal() {
             const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
             document.getElementById('cartTotal').textContent = total + ' ر.س';
+            return total;
         }
         
         // عرض العناصر في السلة
@@ -669,7 +679,7 @@
         }
         
         // إضافة عنصر إلى السلة
-        function addToCart(name, price) {
+        function addToCart(name, price, category) {
             const existingItem = cart.find(item => item.name === name);
             
             if (existingItem) {
@@ -678,7 +688,8 @@
                 cart.push({
                     name,
                     price,
-                    quantity: 1
+                    quantity: 1,
+                    category
                 });
             }
             
@@ -688,6 +699,9 @@
             
             // عرض السلة تلقائياً عند إضافة عنصر
             document.getElementById('cartSidebar').classList.add('open');
+            
+            // عرض رسالة نجاح
+            showAlert(`تم إضافة ${name} إلى السلة`, 'success');
         }
         
         // زيادة كمية العنصر
@@ -713,10 +727,12 @@
         
         // إزالة العنصر من السلة
         function removeItem(index) {
+            const itemName = cart[index].name;
             cart.splice(index, 1);
             updateCartCount();
             updateCartTotal();
             renderCartItems();
+            showAlert(`تم إزالة ${itemName} من السلة`, 'success');
         }
         
         // فتح/إغلاق السلة
@@ -727,37 +743,79 @@
         // تعيين خيار التوصيل
         function setDeliveryOption(option) {
             deliveryOption = option;
-            const buttons = document.querySelectorAll('.delivery-option-btn');
+            const pickupBtn = document.getElementById('pickupBtn');
+            const deliveryBtn = document.getElementById('deliveryBtn');
+            const customerInfo = document.getElementById('customerInfo');
             
-            buttons.forEach(btn => {
-                btn.classList.remove('active');
-            });
+            if (option === 'store') {
+                pickupBtn.classList.add('active');
+                deliveryBtn.classList.remove('active');
+                customerInfo.style.display = 'none';
+            } else {
+                pickupBtn.classList.remove('active');
+                deliveryBtn.classList.add('active');
+                customerInfo.style.display = 'block';
+            }
+        }
+        
+        // عرض رسالة تنبيه
+        function showAlert(message, type) {
+            const alertElement = document.getElementById('alertMessage');
+            alertElement.textContent = message;
+            alertElement.className = 'alert alert-' + type;
+            alertElement.style.display = 'block';
             
-            event.target.classList.add('active');
+            setTimeout(() => {
+                alertElement.style.display = 'none';
+            }, 3000);
         }
         
         // تأكيد الطلب
         function checkout() {
             if (cart.length === 0) {
-                alert('السلة فارغة، يرجى إضافة عناصر أولاً');
+                showAlert('السلة فارغة، يرجى إضافة عناصر أولاً', 'error');
                 return;
             }
             
-            let orderDetails = `تفاصيل الطلب:\n\n`;
-            orderDetails += `طريقة الاستلام: ${deliveryOption === 'store' ? 'استلام من المحل' : 'توصيل'}\n\n`;
+            // التحقق من معلومات العميل إذا كان التوصيل
+            if (deliveryOption === 'delivery') {
+                const name = document.getElementById('customerName').value;
+                const phone = document.getElementById('customerPhone').value;
+                const address = document.getElementById('customerAddress').value;
+                
+                if (!name || !phone || !address) {
+                    showAlert('الرجاء إدخال جميع معلومات العميل للتوصيل', 'error');
+                    return;
+                }
+            }
             
-            cart.forEach(item => {
-                orderDetails += `${item.name} - ${item.quantity} x ${item.price} ر.س = ${item.quantity * item.price} ر.س\n`;
-            });
+            // إنشاء الطلب
+            const order = {
+                id: generateOrderId(),
+                date: new Date().toISOString(),
+                items: [...cart],
+                total: updateCartTotal(),
+                status: 'pending',
+                deliveryMethod: deliveryOption,
+                customer: deliveryOption === 'delivery' ? {
+                    name: document.getElementById('customerName').value,
+                    phone: document.getElementById('customerPhone').value,
+                    address: document.getElementById('customerAddress').value,
+                    notes: document.getElementById('customerNotes').value
+                } : {
+                    name: 'عميل المحل',
+                    phone: '',
+                    address: '',
+                    notes: ''
+                }
+            };
             
-            const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-            orderDetails += `\nالمجموع الكلي: ${total} ر.س`;
-            orderDetails += `\n\nرقم الطاولة: 5`;
+            // حفظ الطلب في localStorage
+            orders.push(order);
+            localStorage.setItem('restaurantOrders', JSON.stringify(orders));
             
-            alert(orderDetails);
-            
-            // هنا يمكنك إضافة كود لإرسال الطلب إلى الخادم
-            console.log('تم تأكيد الطلب:', { cart, deliveryOption, tableNumber: 5 });
+            // إرسال الطلب (في تطبيق حقيقي، هنا سيتم إرسال الطلب إلى الخادم)
+            sendOrderToAdmin(order);
             
             // إعادة تعيين السلة بعد التأكيد
             cart = [];
@@ -765,7 +823,38 @@
             updateCartTotal();
             renderCartItems();
             toggleCart();
+            
+            // عرض رسالة نجاح
+            showAlert(`تم تأكيد طلبك بنجاح! رقم الطلب: ${order.id}`, 'success');
         }
+        
+        // توليد رقم طلب عشوائي
+        function generateOrderId() {
+            return 'ORD-' + Math.floor(1000 + Math.random() * 9000);
+        }
+        
+        // إرسال الطلب إلى لوحة التحكم (محاكاة)
+        function sendOrderToAdmin(order) {
+            // في تطبيق حقيقي، هنا سيتم إرسال الطلب إلى الخادم
+            console.log('تم إرسال الطلب إلى لوحة التحكم:', order);
+            
+            // حفظ الإشعار في لوحة التحكم
+            const adminNotifications = JSON.parse(localStorage.getItem('adminNotifications')) || [];
+            adminNotifications.push({
+                id: Date.now(),
+                text: `طلب جديد #${order.id} من ${order.customer.name}`,
+                time: 'الآن',
+                read: false,
+                orderId: order.id
+            });
+            localStorage.setItem('adminNotifications', JSON.stringify(adminNotifications));
+        }
+        
+        // تهيئة التطبيق
+        document.addEventListener('DOMContentLoaded', function() {
+            updateCartCount();
+            renderCartItems();
+        });
     </script>
 </body>
 </html>
