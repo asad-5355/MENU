@@ -8,37 +8,34 @@
 </head>
 <body class="bg-gradient-to-br from-pink-50 to-purple-50 min-h-screen p-6 font-sans">
 
+  <!-- Cart Notification -->
+  <div id="cartNotification" class="hidden fixed top-4 left-4 bg-green-500 text-white px-4 py-2 rounded shadow-lg animate-bounce z-50">
+    تم إضافة الطلب إلى السلة!
+  </div>
+
+  <!-- Success Notification -->
+  <div id="successNotification" class="hidden fixed top-4 right-4 bg-blue-500 text-white px-4 py-2 rounded shadow-lg animate-pulse z-50">
+    تم قبول طلبك ✅
+  </div>
+
+  <!-- Rejected Notification -->
+  <div id="rejectedNotification" class="hidden fixed top-4 right-4 bg-red-500 text-white px-4 py-2 rounded shadow-lg animate-pulse z-50">
+    تم رفض طلبك ❌
+  </div>
+
   <div class="max-w-md mx-auto bg-white shadow-xl rounded-lg p-6">
     <h1 class="text-3xl font-bold text-center mb-2 text-pink-700">مطعم ريدان للمندي</h1>
     <p class="text-center text-gray-600 mb-6">اختر أصنافك المفضلة</p>
 
     <div class="space-y-4">
-      <!-- دجاج مندي -->
-      <div class="flex items-center justify-between border-b pb-2">
-        <div>
-          <p class="font-medium">دجاج مندي</p>
-          <p class="text-sm text-gray-500">33 درهم</p>
-        </div>
-        <input type="number" id="chickenMandi" min="0" value="0" class="w-16 text-center border rounded">
-      </div>
+      <!-- Chicken Mandi -->
+      <MenuItem label="دجاج مندي" price="33 AED" name="chickenMandi" />
 
-      <!-- لحم مندي -->
-      <div class="flex items-center justify-between border-b pb-2">
-        <div>
-          <p class="font-medium">لحم مندي</p>
-          <p class="text-sm text-gray-500">50 درهم</p>
-        </div>
-        <input type="number" id="muttonMandi" min="0" value="0" class="w-16 text-center border rounded">
-      </div>
+      <!-- Mutton Mandi -->
+      <MenuItem label="لحم مندي" price="50 AED" name="muttonMandi" />
 
-      <!-- سمك مندي -->
-      <div class="flex items-center justify-between border-b pb-2">
-        <div>
-          <p class="font-medium">سمك مندي</p>
-          <p class="text-sm text-gray-500">50 درهم</p>
-        </div>
-        <input type="number" id="fishMandi" min="0" value="0" class="w-16 text-center border rounded">
-      </div>
+      <!-- Fish Mandi -->
+      <MenuItem label="سمك مندي" price="50 AED" name="fishMandi" />
     </div>
 
     <button onclick="submitOrder()" class="mt-6 w-full py-3 bg-pink-600 text-white rounded-lg hover:bg-pink-700 transition">
@@ -46,27 +43,115 @@
     </button>
   </div>
 
+  <!-- Shopping Cart -->
+  <div id="shoppingCart" class="fixed bottom-4 right-4 bg-white border rounded-lg p-4 shadow-lg w-64 max-h-64 overflow-y-auto">
+    <h3 class="font-bold mb-2">سلة المشتريات</h3>
+    <ul id="cartItems" class="space-y-1"></ul>
+    <p id="totalPrice" class="mt-2 font-semibold text-right">الإجمالي: 0 AED</p>
+  </div>
+
   <script>
+    const prices = {
+      chickenMandi: 33,
+      muttonMandi: 50,
+      fishMandi: 50
+    };
+
+    let cart = {};
+    let total = 0;
+
+    function MenuItem({ label, price, name }) {
+      const container = document.createElement('div');
+      container.className = 'flex items-center justify-between border-b pb-2';
+
+      container.innerHTML = `
+        <div>
+          <p class="font-medium">${label}</p>
+          <p class="text-sm text-gray-500">${price}</p>
+        </div>
+        <input type="number" id="${name}" min="0" value="0" onchange="updateCart('${name}')" class="w-16 text-center border rounded">
+      `;
+      document.querySelector('.space-y-4').appendChild(container);
+    }
+
+    window.MenuItem = MenuItem; // Make accessible globally
+
+    function updateCart(name) {
+      const qty = parseInt(document.getElementById(name).value) || 0;
+      cart[name] = qty;
+      renderCart();
+    }
+
+    function renderCart() {
+      const cartItems = document.getElementById('cartItems');
+      cartItems.innerHTML = '';
+      total = 0;
+
+      Object.entries(cart).forEach(([name, qty]) => {
+        if (qty > 0) {
+          const itemTotal = qty * prices[name];
+          total += itemTotal;
+
+          const li = document.createElement('li');
+          li.textContent = `${name.replace(/([A-Z])/g, ' $1').toLowerCase().replace(/^\w/, c => c.toUpperCase())}: ${qty} × ${prices[name]} AED = ${itemTotal} AED`;
+          cartItems.appendChild(li);
+        }
+      });
+
+      document.getElementById('totalPrice').textContent = `الإجمالي: ${total} AED`;
+    }
+
     function submitOrder() {
-      const chicken = parseInt(document.getElementById('chickenMandi').value);
-      const mutton = parseInt(document.getElementById('muttonMandi').value);
-      const fish = parseInt(document.getElementById('fishMandi').value);
+      const orders = JSON.parse(localStorage.getItem('raidanOrders') || '[]');
 
-      let order = {};
-      if (chicken > 0) order['دجاج مندي'] = chicken;
-      if (mutton > 0) order['لحم مندي'] = mutton;
-      if (fish > 0) order['سمك مندي'] = fish;
+      const newOrder = {};
+      Object.keys(cart).forEach(key => {
+        if (cart[key] > 0) newOrder[key] = cart[key];
+      });
 
-      if (Object.keys(order).length === 0) {
+      if (Object.keys(newOrder).length === 0) {
         alert("يرجى اختيار كمية من أحد الأطباق.");
         return;
       }
 
-      const orders = JSON.parse(localStorage.getItem('raidanOrders') || '[]');
-      orders.push(order);
+      orders.push(newOrder);
       localStorage.setItem('raidanOrders', JSON.stringify(orders));
 
-      alert("تم تقديم طلبك!");
+      // Show notification
+      const notif = document.getElementById('cartNotification');
+      notif.classList.remove('hidden');
+      setTimeout(() => notif.classList.add('hidden'), 3000);
+
+      // Save order ID for future status check
+      localStorage.setItem('lastOrderId', orders.length - 1);
+    }
+
+    // Check order status every few seconds
+    setInterval(() => {
+      const orderId = localStorage.getItem('lastOrderId');
+      if (!orderId) return;
+
+      const status = localStorage.getItem(`orderStatus_${orderId}`);
+      if (status === 'accepted') {
+        showNotification('success');
+        localStorage.removeItem(`orderStatus_${orderId}`);
+      } else if (status === 'rejected') {
+        showNotification('rejected');
+        localStorage.removeItem(`orderStatus_${orderId}`);
+      }
+    }, 2000);
+
+    function showNotification(type) {
+      const successNotif = document.getElementById('successNotification');
+      const rejectedNotif = document.getElementById('rejectedNotification');
+
+      if (type === 'success') {
+        successNotif.classList.remove('hidden');
+        setTimeout(() => successNotif.classList.add('hidden'), 3000);
+      } else {
+        rejectedNotif.classList.remove('hidden');
+        setTimeout(() => rejectedNotif.classList.add('hidden'), 3000);
+      }
     }
   </script>
 </body>
