@@ -63,6 +63,17 @@
             background-color: #b02957;
         }
 
+        /* تصميم رسالة الواتساب */
+        .whatsapp-message {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #aaffaa; /* لون الخلفية الأخضر الداكن */
+            border-radius: 12px;
+            font-size: 18px;
+            line-height: 1.6;
+            color: #333;
+        }
+
         @media (max-width: 600px) {
             .container {
                 margin: 20px;
@@ -79,7 +90,7 @@
         <input type="text" id="name" placeholder="أدخل اسمك هنا" required>
 
         <label for="day">اليوم:</label>
-        <input type="text" id="day" placeholder="مثال: الإثنين" required>
+        <input type="text" id="day" placeholder="مثال: السبت" required>
 
         <label for="prep_time">وقت التجهيز:</label>
         <input type="time" id="prep_time" required>
@@ -89,9 +100,37 @@
 
         <button type="submit">إرسال عبر WhatsApp</button>
     </form>
+
+    <!-- رسالة الواتساب الم仿 -->
+    <div class="whatsapp-message" id="previewMessage"></div>
 </div>
 
 <script>
+    // قائمة المرجعية للترجمة من العربية إلى البنغالية
+    const translationMap = {
+        "سلام": "নমস্কার",
+        "السبت": "শনিবার",
+        "مندي لحم": "মাংসের মন্ডি",
+        "مندي دجاج": "চিকেন মন্ডি",
+        "مكرونة": "মক্রোনা",
+        "بطاطس": "পটো",
+        "شاي": "চা",
+        "قهوة": "কফি",
+        "زبادي": "দই",
+        "عصير": "সঞ্জীবনী",
+        "وجبة": "ভোজ্য",
+        "عدد": "সংখ্যা",
+        "ص": "সেকেন্ড",
+        "دقائق": "মিনিট",
+        "ساعة": "ঘণ্টা"
+    };
+
+    function translateArabicToBengali(text) {
+        return text.split(' ').map(word => {
+            return translationMap[word] || word; // ترجمة الكلمة إن وجدت، وإلا الإبقاء عليها كما هي
+        }).join(' ');
+    }
+
     function sendToWhatsApp(event) {
         event.preventDefault();
 
@@ -100,9 +139,16 @@
         const prepTime = document.getElementById('prep_time').value.trim();
         const order = document.getElementById('order').value.trim();
 
-        // رسالة باللغة البنغالية مع وقت التجهيز
-        const bengaliMessage = `নমস্কার! এটি একটি নতুন অর্ডার:\n\nগ্রাহকের নাম: ${name}\nদিন: ${day}\nঅর্ডার: ${order}\nপ্রস্তুতের সময়: ${prepTime}`;
-        
+        // ترجمة الطلبيَّة إلى البنغالية
+        const translatedOrder = translateArabicToBengali(order);
+
+        // رسالة بنغالية كاملة
+        const bengaliMessage = `নমস্কার! এটি একটি নতুন অর্ডার:\n\nগ্রাহকের নাম: ${name}\nদিন: ${day}\nঅর্ডার: ${translatedOrder}\nপ্রস্তুতের সময়: ${prepTime}`;
+
+        // تحديث رسالة الواتساب الم模仿
+        const previewMessageDiv = document.getElementById('previewMessage');
+        previewMessageDiv.innerHTML = bengaliMessage;
+
         const encodedMessage = encodeURIComponent(bengaliMessage);
         const whatsappURL = `https://wa.me/971588155123?text=${encodedMessage}`;
 
