@@ -133,6 +133,10 @@
         .hidden {
             display: none;
         }
+        #custom-time {
+            margin-top: 10px;
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -164,9 +168,13 @@
                         <label for="day" data-ar="اليوم" data-hi="दिन">اليوم</label>
                         <select id="day" required>
                             <option value="" selected disabled data-ar="اختر اليوم" data-hi="दिन चुनें">اختر اليوم</option>
-                            <option value="اليوم" data-ar="اليوم" data-hi="आज">اليوم</option>
-                            <option value="غداً" data-ar="غداً" data-hi="कल">غداً</option>
-                            <option value="بعد غد" data-ar="بعد غد" data-hi="परसों">بعد غد</option>
+                            <option value="السبت" data-ar="السبت" data-hi="शनिवार">السبت</option>
+                            <option value="الأحد" data-ar="الأحد" data-hi="रविवार">الأحد</option>
+                            <option value="الإثنين" data-ar="الإثنين" data-hi="सोमवार">الإثنين</option>
+                            <option value="الثلاثاء" data-ar="الثلاثاء" data-hi="मंगलवार">الثلاثاء</option>
+                            <option value="الأربعاء" data-ar="الأربعاء" data-hi="बुधवार">الأربعاء</option>
+                            <option value="الخميس" data-ar="الخميس" data-hi="गुरुवार">الخميس</option>
+                            <option value="الجمعة" data-ar="الجمعة" data-hi="शुक्रवार">الجمعة</option>
                         </select>
                     </div>
                     
@@ -179,6 +187,7 @@
                             <option value="ساعتين" data-ar="بعد ساعتين" data-hi="2 घंटे में">بعد ساعتين</option>
                             <option value="محدد" data-ar="وقت محدد" data-hi="निर्धारित समय">وقت محدد</option>
                         </select>
+                        <input type="text" id="custom-time" placeholder="أدخل الوقت (مثال: 10:20)" data-ar-placeholder="أدخل الوقت (مثال: 10:20)" data-hi-placeholder="समय दर्ज करें (उदाहरण: 10:20)">
                     </div>
                     
                     <div class="buttons">
@@ -213,6 +222,8 @@
             const langArBtn = document.getElementById('lang-ar');
             const langHiBtn = document.getElementById('lang-hi');
             const form = document.getElementById('order-form');
+            const prepTimeSelect = document.getElementById('prep-time');
+            const customTimeInput = document.getElementById('custom-time');
             
             let currentLanguage = 'ar';
             
@@ -246,6 +257,17 @@
                 updateLanguage();
             });
             
+            // إظهار/إخفاء حقل الوقت المخصص
+            prepTimeSelect.addEventListener('change', function() {
+                if (this.value === 'محدد') {
+                    customTimeInput.style.display = 'block';
+                    customTimeInput.required = true;
+                } else {
+                    customTimeInput.style.display = 'none';
+                    customTimeInput.required = false;
+                }
+            });
+            
             function updateLanguage() {
                 // تحديث النصوص
                 document.querySelectorAll('[data-ar], [data-hi]').forEach(element => {
@@ -273,24 +295,21 @@
                 const name = document.getElementById('name').value;
                 const day = document.getElementById('day').value;
                 const prepTime = document.getElementById('prep-time').value;
+                const customTime = document.getElementById('custom-time').value;
                 const order = document.getElementById('order').value;
                 
-                // إنشاء رسالة الطلب
-                let message = '';
+                // تحديد وقت التجهيز
+                let preparationTime = prepTime;
+                if (prepTime === 'محدد' && customTime) {
+                    preparationTime = customTime;
+                }
                 
-                if (currentLanguage === 'ar') {
-                    message = `طلب جديد من مطعم ريدان:
-الاسم: ${name}
-اليوم: ${day}
-وقت التجهيز: ${prepTime}
-الطلبية: ${order}`;
-                } else {
-                    message = `रयदान रेस्तरां से नया आर्डर:
+                // إنشاء رسالة الطلب باللغة الهندية دائماً
+                const message = `रयदान रेस्तरां से नया आर्डर:
 नाम: ${name}
 दिन: ${day}
-तैयारी का समय: ${prepTime}
+तैयारी का समय: ${preparationTime}
 आर्डर: ${order}`;
-                }
                 
                 // تشفير الرسالة لإرسالها عبر واتساب
                 const encodedMessage = encodeURIComponent(message);
@@ -302,6 +321,7 @@
                 
                 // إعادة تعيين النموذج
                 form.reset();
+                customTimeInput.style.display = 'none';
                 step2.classList.remove('active');
                 step1.classList.add('active');
                 step2Indicator.classList.remove('active');
