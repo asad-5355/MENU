@@ -3,158 +3,863 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مطعم ريدان - تسجيل الطلبيات</title>
+    <title>مطعم ريدان - المندي اليمني الأصيل</title>
     <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #fff8f0;
+        @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap');
+        
+        * {
             margin: 0;
             padding: 0;
-            color: #333;
+            box-sizing: border-box;
+            font-family: 'Tajawal', sans-serif;
         }
-
-        .container {
-            max-width: 500px;
-            margin: auto;
-            padding: 20px;
-            background-color: #ffffff;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            margin-top: 40px;
+        
+        body {
+            background-color: #f9f3e9;
+            color: #5a3921;
         }
-
-        h1 {
+        
+        header {
+            background-color: #8b0000;
+            color: white;
+            padding: 20px 0;
             text-align: center;
-            color: #d6336c;
-            font-size: 24px;
+            position: relative;
         }
-
-        label {
+        
+        .logo {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 15px;
             display: block;
-            margin-top: 15px;
+            border-radius: 50%;
+            border: 3px solid #e8c07d;
+            object-fit: cover;
+        }
+        
+        .restaurant-name {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            color: #e8c07d;
+        }
+        
+        .branch {
+            font-size: 1.2rem;
+            margin: 5px 0;
+        }
+        
+        .whatsapp-btn {
+            background-color: #25D366;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 1rem;
+            margin: 10px 5px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            text-decoration: none;
+        }
+        
+        .whatsapp-btn img {
+            width: 20px;
+            margin-left: 8px;
+        }
+        
+        .delivery-info {
+            background-color: #e8c07d;
+            padding: 10px;
+            text-align: center;
             font-weight: bold;
         }
-
-        input[type="text"],
-        input[type="time"],
-        textarea {
-            width: 100%;
-            padding: 10px;
-            margin-top: 5px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            font-size: 16px;
-            resize: vertical;
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            display: flex;
+            gap: 20px;
         }
-
-        button {
-            margin-top: 20px;
-            width: 100%;
-            padding: 12px;
-            background-color: #d6336c;
-            color: white;
-            font-size: 18px;
-            border: none;
+        
+        .menu-container {
+            flex: 3;
+        }
+        
+        .cart-container {
+            flex: 1;
+            position: sticky;
+            top: 20px;
+            height: fit-content;
+            background-color: white;
             border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+        
+        .cart-title {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #8b0000;
+            border-bottom: 2px solid #e8c07d;
+            padding-bottom: 5px;
+        }
+        
+        .cart-items {
+            margin-bottom: 15px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px dashed #e8c07d;
+        }
+        
+        .cart-item-name {
+            flex: 2;
+        }
+        
+        .cart-item-price {
+            flex: 1;
+            text-align: left;
+        }
+        
+        .cart-item-remove {
+            color: #8b0000;
+            cursor: pointer;
+            margin-right: 5px;
+        }
+        
+        .cart-total {
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-top: 15px;
+            padding-top: 10px;
+            border-top: 2px solid #e8c07d;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .checkout-btn {
+            background-color: #8b0000;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 5px;
+            font-size: 1rem;
+            width: 100%;
+            margin-top: 15px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .checkout-btn:hover {
+            background-color: #6d0000;
+        }
+        
+        .branch-selection {
+            margin-bottom: 15px;
+        }
+        
+        .branch-option {
+            display: block;
+            margin-bottom: 8px;
             cursor: pointer;
         }
-
-        button:hover {
-            background-color: #b02957;
+        
+        .branch-option input {
+            margin-left: 8px;
         }
-
-        /* تصميم رسالة الواتساب */
-        .whatsapp-message {
-            margin-top: 20px;
+        
+        .menu-section {
+            margin-bottom: 40px;
+        }
+        
+        .section-title {
+            background-color: #8b0000;
+            color: #e8c07d;
+            padding: 10px 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+        }
+        
+        .menu-items {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .menu-item {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+        
+        .menu-item:hover {
+            transform: translateY(-5px);
+        }
+        
+        .item-name {
+            padding: 15px;
+            background-color: #5a3921;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .item-name-ar {
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+        
+        .item-price {
+            background-color: #e8c07d;
+            color: #5a3921;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+        
+        .item-desc {
+            padding: 15px;
+            color: #5a3921;
+        }
+        
+        .item-actions {
+            padding: 0 15px 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+        }
+        
+        .quantity-btn {
+            background-color: #e8c07d;
+            color: #5a3921;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .quantity {
+            margin: 0 10px;
+            font-weight: bold;
+        }
+        
+        .add-to-cart {
+            background-color: #8b0000;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .add-to-cart:hover {
+            background-color: #6d0000;
+        }
+        
+        footer {
+            background-color: #5a3921;
+            color: #e8c07d;
+            text-align: center;
             padding: 20px;
-            background-color: #aaffaa; /* لون الخلفية الأخضر الداكن */
-            border-radius: 12px;
-            font-size: 18px;
-            line-height: 1.6;
-            color: #333;
+            margin-top: 40px;
         }
-
-        @media (max-width: 600px) {
+        
+        @media (max-width: 768px) {
             .container {
-                margin: 20px;
+                flex-direction: column;
+            }
+            
+            .menu-items {
+                grid-template-columns: 1fr;
+            }
+            
+            .restaurant-name {
+                font-size: 2rem;
+            }
+            
+            .cart-container {
+                position: static;
+                margin-top: 30px;
             }
         }
     </style>
 </head>
 <body>
+    <header>
+        <img src="logo.jpg" alt="شعار مطعم ريدان" class="logo">
+        <h1 class="restaurant-name">مطعم ريدان للمندي</h1>
+        <p class="branch">فرع دبي: مطعم ريدان دبي</p>
+        <p class="branch">فرع الشارقة: وادي ريدان</p>
+    </header>
+    
+    <div class="delivery-info">
+        <p>الخدمات: توصيل - اسلام من المحل</p>
+    </div>
+    
+    <div class="container">
+        <div class="menu-container">
+            <section class="menu-section">
+                <h2 class="section-title">وجبات اللحم</h2>
+                <div class="menu-items">
+                    <div class="menu-item">
+                        <div class="item-name">
+                            <span class="item-name-ar">مثكر مولفة</span>
+                            <span class="item-price">75 AED</span>
+                        </div>
+                        <div class="item-desc">Mutton Hanith - Shoulder</div>
+                        <div class="item-actions">
+                            <div class="quantity-controls">
+                                <button class="quantity-btn minus">-</button>
+                                <span class="quantity">1</span>
+                                <button class="quantity-btn plus">+</button>
+                            </div>
+                            <button class="add-to-cart">إضافة للسلة</button>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-name">
+                            <span class="item-name-ar">مقاطع لحم</span>
+                            <span class="item-price">50 AED</span>
+                        </div>
+                        <div class="item-desc">Mutton Mogalgal</div>
+                        <div class="item-actions">
+                            <div class="quantity-controls">
+                                <button class="quantity-btn minus">-</button>
+                                <span class="quantity">1</span>
+                                <button class="quantity-btn plus">+</button>
+                            </div>
+                            <button class="add-to-cart">إضافة للسلة</button>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-name">
+                            <span class="item-name-ar">مدفون ربطان لحم</span>
+                            <span class="item-price">60 AED</span>
+                        </div>
+                        <div class="item-desc">Raydan Maddoon Mutton</div>
+                        <div class="item-actions">
+                            <div class="quantity-controls">
+                                <button class="quantity-btn minus">-</button>
+                                <span class="quantity">1</span>
+                                <button class="quantity-btn plus">+</button>
+                            </div>
+                            <button class="add-to-cart">إضافة للسلة</button>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-name">
+                            <span class="item-name-ar">فط بغازي لحم</span>
+                            <span class="item-price">50 AED</span>
+                        </div>
+                        <div class="item-desc">Mutton Brickart</div>
+                        <div class="item-actions">
+                            <div class="quantity-controls">
+                                <button class="quantity-btn minus">-</button>
+                                <span class="quantity">1</span>
+                                <button class="quantity-btn plus">+</button>
+                            </div>
+                            <button class="add-to-cart">إضافة للسلة</button>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-name">
+                            <span class="item-name-ar">فط زريني لحم</span>
+                            <span class="item-price">60 AED</span>
+                        </div>
+                        <div class="item-desc">Mutton Zurbian</div>
+                        <div class="item-actions">
+                            <div class="quantity-controls">
+                                <button class="quantity-btn minus">-</button>
+                                <span class="quantity">1</span>
+                                <button class="quantity-btn plus">+</button>
+                            </div>
+                            <button class="add-to-cart">إضافة للسلة</button>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-name">
+                            <span class="item-name-ar">فط مدوون لحم</span>
+                            <span class="item-price">60 AED</span>
+                        </div>
+                        <div class="item-desc">Mutton Madfoon</div>
+                        <div class="item-actions">
+                            <div class="quantity-controls">
+                                <button class="quantity-btn minus">-</button>
+                                <span class="quantity">1</span>
+                                <button class="quantity-btn plus">+</button>
+                            </div>
+                            <button class="add-to-cart">إضافة للسلة</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section class="menu-section">
+                <h2 class="section-title">وجبات السمك</h2>
+                <div class="menu-items">
+                    <div class="menu-item">
+                        <div class="item-name">
+                            <span class="item-name-ar">سماك قبلي</span>
+                            <span class="item-price">50 AED</span>
+                        </div>
+                        <div class="item-desc">Felly Fish - Fried/Grilled</div>
+                        <div class="item-actions">
+                            <div class="quantity-controls">
+                                <button class="quantity-btn minus">-</button>
+                                <span class="quantity">1</span>
+                                <button class="quantity-btn plus">+</button>
+                            </div>
+                            <button class="add-to-cart">إضافة للسلة</button>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-name">
+                            <span class="item-name-ar">سماك فزنل، شغري</span>
+                            <span class="item-price">50 AED</span>
+                        </div>
+                        <div class="item-desc">Jarah Fish + Shary</div>
+                        <div class="item-actions">
+                            <div class="quantity-controls">
+                                <button class="quantity-btn minus">-</button>
+                                <span class="quantity">1</span>
+                                <button class="quantity-btn plus">+</button>
+                            </div>
+                            <button class="add-to-cart">إضافة للسلة</button>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-name">
+                            <span class="item-name-ar">سلمون</span>
+                            <span class="item-price">50 AED</span>
+                        </div>
+                        <div class="item-desc">Salamon</div>
+                        <div class="item-actions">
+                            <div class="quantity-controls">
+                                <button class="quantity-btn minus">-</button>
+                                <span class="quantity">1</span>
+                                <button class="quantity-btn plus">+</button>
+                            </div>
+                            <button class="add-to-cart">إضافة للسلة</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section class="menu-section">
+                <h2 class="section-title">وجبات الدجاج</h2>
+                <div class="menu-items">
+                    <div class="menu-item">
+                        <div class="item-name">
+                            <span class="item-name-ar">مغني دجاج</span>
+                            <span class="item-price">33 AED</span>
+                        </div>
+                        <div class="item-desc">Chicken Maulù</div>
+                        <div class="item-actions">
+                            <div class="quantity-controls">
+                                <button class="quantity-btn minus">-</button>
+                                <span class="quantity">1</span>
+                                <button class="quantity-btn plus">+</button>
+                            </div>
+                            <button class="add-to-cart">إضافة للسلة</button>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-name">
+                            <span class="item-name-ar">زبيل دجاج</span>
+                            <span class="item-price">35 AED</span>
+                        </div>
+                        <div class="item-desc">Chicken Zurbian</div>
+                        <div class="item-actions">
+                            <div class="quantity-controls">
+                                <button class="quantity-btn minus">-</button>
+                                <span class="quantity">1</span>
+                                <button class="quantity-btn plus">+</button>
+                            </div>
+                            <button class="add-to-cart">إضافة للسلة</button>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-name">
+                            <span class="item-name-ar">مندي دجاج</span>
+                            <span class="item-price">30 AED</span>
+                        </div>
+                        <div class="item-desc">Chicken Mandi</div>
+                        <div class="item-actions">
+                            <div class="quantity-controls">
+                                <button class="quantity-btn minus">-</button>
+                                <span class="quantity">1</span>
+                                <button class="quantity-btn plus">+</button>
+                            </div>
+                            <button class="add-to-cart">إضافة للسلة</button>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-name">
+                            <span class="item-name-ar">منوين دجاج</span>
+                            <span class="item-price">38 AED</span>
+                        </div>
+                        <div class="item-desc">Chicken Madfoot</div>
+                        <div class="item-actions">
+                            <div class="quantity-controls">
+                                <button class="quantity-btn minus">-</button>
+                                <span class="quantity">1</span>
+                                <button class="quantity-btn plus">+</button>
+                            </div>
+                            <button class="add-to-cart">إضافة للسلة</button>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-name">
+                            <span class="item-name-ar">منذ بدجاج</span>
+                            <span class="item-price">35 AED</span>
+                        </div>
+                        <div class="item-desc">Chicken Harith</div>
+                        <div class="item-actions">
+                            <div class="quantity-controls">
+                                <button class="quantity-btn minus">-</button>
+                                <span class="quantity">1</span>
+                                <button class="quantity-btn plus">+</button>
+                            </div>
+                            <button class="add-to-cart">إضافة للسلة</button>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-name">
+                            <span class="item-name-ar">منوين زبيل دجاج</span>
+                            <span class="item-price">35 AED</span>
+                        </div>
+                        <div class="item-desc">Raydan Maddon Chicken</div>
+                        <div class="item-actions">
+                            <div class="quantity-controls">
+                                <button class="quantity-btn minus">-</button>
+                                <span class="quantity">1</span>
+                                <button class="quantity-btn plus">+</button>
+                            </div>
+                            <button class="add-to-cart">إضافة للسلة</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section class="menu-section">
+                <h2 class="section-title">السلطات</h2>
+                <div class="menu-items">
+                    <div class="menu-item">
+                        <div class="item-name">
+                            <span class="item-name-ar">جبن كنالة</span>
+                            <span class="item-price">15 AED</span>
+                        </div>
+                        <div class="item-desc">Cheese Kunala</div>
+                        <div class="item-actions">
+                            <div class="quantity-controls">
+                                <button class="quantity-btn minus">-</button>
+                                <span class="quantity">1</span>
+                                <button class="quantity-btn plus">+</button>
+                            </div>
+                            <button class="add-to-cart">إضافة للسلة</button>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-name">
+                            <span class="item-name-ar">سلطة أرجولا</span>
+                            <span class="item-price">15 AED</span>
+                        </div>
+                        <div class="item-desc">Aryugula Salad</div>
+                        <div class="item-actions">
+                            <div class="quantity-controls">
+                                <button class="quantity-btn minus">-</button>
+                                <span class="quantity">1</span>
+                                <button class="quantity-btn plus">+</button>
+                            </div>
+                            <button class="add-to-cart">إضافة للسلة</button>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-name">
+                            <span class="item-name-ar">سلطة عربية</span>
+                            <span class="item-price">15 AED</span>
+                        </div>
+                        <div class="item-desc">Arabic Salad</div>
+                        <div class="item-actions">
+                            <div class="quantity-controls">
+                                <button class="quantity-btn minus">-</button>
+                                <span class="quantity">1</span>
+                                <button class="quantity-btn plus">+</button>
+                            </div>
+                            <button class="add-to-cart">إضافة للسلة</button>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-name">
+                            <span class="item-name-ar">سلطة ريدان</span>
+                            <span class="item-price">15 AED</span>
+                        </div>
+                        <div class="item-desc">Raidan Salad</div>
+                        <div class="item-actions">
+                            <div class="quantity-controls">
+                                <button class="quantity-btn minus">-</button>
+                                <span class="quantity">1</span>
+                                <button class="quantity-btn plus">+</button>
+                            </div>
+                            <button class="add-to-cart">إضافة للسلة</button>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-name">
+                            <span class="item-name-ar">خيار باللبن</span>
+                            <span class="item-price">16 AED</span>
+                        </div>
+                        <div class="item-desc">Cucumber Yogurt</div>
+                        <div class="item-actions">
+                            <div class="quantity-controls">
+                                <button class="quantity-btn minus">-</button>
+                                <span class="quantity">1</span>
+                                <button class="quantity-btn plus">+</button>
+                            </div>
+                            <button class="add-to-cart">إضافة للسلة</button>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-name">
+                            <span class="item-name-ar">لبن</span>
+                            <span class="item-price">15 AED</span>
+                        </div>
+                        <div class="item-desc">Yogurt</div>
+                        <div class="item-actions">
+                            <div class="quantity-controls">
+                                <button class="quantity-btn minus">-</button>
+                                <span class="quantity">1</span>
+                                <button class="quantity-btn plus">+</button>
+                            </div>
+                            <button class="add-to-cart">إضافة للسلة</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+        
+        <div class="cart-container">
+            <h3 class="cart-title">سلة الطلبات</h3>
+            
+            <div class="branch-selection">
+                <p>اختر الفرع:</p>
+                <label class="branch-option">
+                    <input type="radio" name="branch" value="dubai" checked>
+                    فرع دبي (مطعم ريدان دبي)
+                </label>
+                <label class="branch-option">
+                    <input type="radio" name="branch" value="sharjah">
+                    فرع الشارقة (وادي ريدان)
+                </label>
+            </div>
+            
+            <div class="cart-items">
+                <!-- سيتم إضافة العناصر هنا عبر JavaScript -->
+                <p class="empty-cart-message">السلة فارغة</p>
+            </div>
+            
+            <div class="cart-total">
+                <span>المجموع:</span>
+                <span class="total-amount">0 AED</span>
+            </div>
+            
+            <button class="checkout-btn" id="checkout-btn">إتمام الطلب عبر واتساب</button>
+        </div>
+    </div>
+    
+    <footer>
+        <p>مطعم ريدان - المندي اليمني الأصيل</p>
+        <p>جميع الحقوق محفوظة &copy; 2023</p>
+    </footer>
 
-<div class="container">
-    <h1>مطعم ريدان - تسجيل الطلبيات</h1>
-    <form onsubmit="sendToWhatsApp(event)">
-        <label for="name">الاسم:</label>
-        <input type="text" id="name" placeholder="أدخل اسمك هنا" required>
-
-        <label for="day">اليوم:</label>
-        <input type="text" id="day" placeholder="مثال: السبت" required>
-
-        <label for="prep_time">وقت التجهيز:</label>
-        <input type="time" id="prep_time" required>
-
-        <label for="order">الطلبيَّة:</label>
-        <textarea id="order" rows="4" placeholder="اكتب طلبيتك هنا..." required></textarea>
-
-        <button type="submit">إرسال عبر WhatsApp</button>
-    </form>
-
-    <!-- رسالة الواتساب الم仿 -->
-    <div class="whatsapp-message" id="previewMessage"></div>
-</div>
-
-<script>
-    // قائمة المرجعية للترجمة من العربية إلى البنغالية
-    const translationMap = {
-        "سلام": "নমস্কার",
-        "السبت": "শনিবার",
-        "مندي لحم": "মাংসের মন্ডি",
-        "مندي دجاج": "চিকেন মন্ডি",
-        "مكرونة": "মক্রোনা",
-        "بطاطس": "পটো",
-        "شاي": "চা",
-        "قهوة": "কফি",
-        "زبادي": "দই",
-        "عصير": "সঞ্জীবনী",
-        "وجبة": "ভোজ্য",
-        "عدد": "সংখ্যা",
-        "ص": "সেকেন্ড",
-        "دقائق": "মিনিট",
-        "ساعة": "ঘণ্টা"
-    };
-
-    function translateArabicToBengali(text) {
-        return text.split(' ').map(word => {
-            return translationMap[word] || word; // ترجمة الكلمة إن وجدت، وإلا الإبقاء عليها كما هي
-        }).join(' ');
-    }
-
-    function sendToWhatsApp(event) {
-        event.preventDefault();
-
-        const name = document.getElementById('name').value.trim();
-        const day = document.getElementById('day').value.trim();
-        const prepTime = document.getElementById('prep_time').value.trim();
-        const order = document.getElementById('order').value.trim();
-
-        // ترجمة الطلبيَّة إلى البنغالية
-        const translatedOrder = translateArabicToBengali(order);
-
-        // رسالة بنغالية كاملة
-        const bengaliMessage = `নমস্কার! এটি একটি নতুন অর্ডার:\n\nগ্রাহকের নাম: ${name}\nদিন: ${day}\nঅর্ডার: ${translatedOrder}\nপ্রস্তুতের সময়: ${prepTime}`;
-
-        // تحديث رسالة الواتساب الم模仿
-        const previewMessageDiv = document.getElementById('previewMessage');
-        previewMessageDiv.innerHTML = bengaliMessage;
-
-        const encodedMessage = encodeURIComponent(bengaliMessage);
-        const whatsappURL = `https://wa.me/971588155123?text=${encodedMessage}`;
-
-        window.open(whatsappURL, '_blank');
-    }
-</script>
-
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // متغيرات لتخزين بيانات السلة
+            let cart = [];
+            let total = 0;
+            
+            // عناصر DOM المهمة
+            const cartItemsContainer = document.querySelector('.cart-items');
+            const emptyCartMessage = document.querySelector('.empty-cart-message');
+            const totalAmountElement = document.querySelector('.total-amount');
+            const checkoutBtn = document.getElementById('checkout-btn');
+            
+            // إضافة عنصر للسلة
+            function addToCart(itemName, itemPrice, quantity) {
+                // التحقق إذا كان العنصر موجود بالفعل في السلة
+                const existingItem = cart.find(item => item.name === itemName);
+                
+                if (existingItem) {
+                    existingItem.quantity += quantity;
+                } else {
+                    cart.push({
+                        name: itemName,
+                        price: itemPrice,
+                        quantity: quantity
+                    });
+                }
+                
+                // تحديث المجموع
+                total += itemPrice * quantity;
+                
+                // تحديث عرض السلة
+                updateCartDisplay();
+            }
+            
+            // إزالة عنصر من السلة
+            function removeFromCart(index) {
+                const removedItem = cart[index];
+                total -= removedItem.price * removedItem.quantity;
+                cart.splice(index, 1);
+                updateCartDisplay();
+            }
+            
+            // تحديث عرض السلة
+            function updateCartDisplay() {
+                // إفراغ حاوية السلة
+                cartItemsContainer.innerHTML = '';
+                
+                // إذا كانت السلة فارغة، عرض رسالة
+                if (cart.length === 0) {
+                    emptyCartMessage.style.display = 'block';
+                    totalAmountElement.textContent = '0 AED';
+                    checkoutBtn.disabled = true;
+                    return;
+                } else {
+                    emptyCartMessage.style.display = 'none';
+                    checkoutBtn.disabled = false;
+                }
+                
+                // إضافة كل عنصر في السلة إلى العرض
+                cart.forEach((item, index) => {
+                    const cartItemElement = document.createElement('div');
+                    cartItemElement.className = 'cart-item';
+                    
+                    cartItemElement.innerHTML = `
+                        <span class="cart-item-name">${item.name} (${item.quantity})</span>
+                        <span class="cart-item-price">${item.price * item.quantity} AED</span>
+                        <span class="cart-item-remove" data-index="${index}">×</span>
+                    `;
+                    
+                    cartItemsContainer.appendChild(cartItemElement);
+                });
+                
+                // تحديث المجموع الكلي
+                totalAmountElement.textContent = `${total} AED`;
+                
+                // إضافة مستمعين لأزرار الإزالة
+                document.querySelectorAll('.cart-item-remove').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const index = parseInt(this.getAttribute('data-index'));
+                        removeFromCart(index);
+                    });
+                });
+            }
+            
+            // إعداد مستمعين لأزرار "إضافة للسلة"
+            document.querySelectorAll('.add-to-cart').forEach(button => {
+                button.addEventListener('click', function() {
+                    const menuItem = this.closest('.menu-item');
+                    const itemName = menuItem.querySelector('.item-name-ar').textContent;
+                    const itemPrice = parseInt(menuItem.querySelector('.item-price').textContent);
+                    const quantity = parseInt(menuItem.querySelector('.quantity').textContent);
+                    
+                    addToCart(itemName, itemPrice, quantity);
+                    
+                    // إعادة تعيين الكمية إلى 1
+                    menuItem.querySelector('.quantity').textContent = '1';
+                });
+            });
+            
+            // إعداد مستمعين لأزرار زيادة/تقليل الكمية
+            document.querySelectorAll('.quantity-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    const quantityElement = this.parentElement.querySelector('.quantity');
+                    let quantity = parseInt(quantityElement.textContent);
+                    
+                    if (this.classList.contains('plus')) {
+                        quantity++;
+                    } else if (this.classList.contains('minus') && quantity > 1) {
+                        quantity--;
+                    }
+                    
+                    quantityElement.textContent = quantity;
+                });
+            });
+            
+            // إعداد مستمع لزر إتمام الطلب
+            checkoutBtn.addEventListener('click', function() {
+                if (cart.length === 0) return;
+                
+                const selectedBranch = document.querySelector('input[name="branch"]:checked').value;
+                let whatsappNumber, branchName;
+                
+                if (selectedBranch === 'dubai') {
+                    whatsappNumber = '971588155123';
+                    branchName = 'مطعم ريدان دبي';
+                } else {
+                    whatsappNumber = '971565910681';
+                    branchName = 'وادي ريدان (الشارقة)';
+                }
+                
+                // إنشاء رسالة الطلب
+                let message = `مرحباً، أريد طلب التالي من ${branchName}:\n\n`;
+                
+                cart.forEach(item => {
+                    message += `${item.name} - ${item.quantity} × ${item.price} AED = ${item.quantity * item.price} AED\n`;
+                });
+                
+                message += `\nالمجموع: ${total} AED`;
+                message += `\n\nشكراً لكم!`;
+                
+                // ترميز الرسالة للرابط
+                const encodedMessage = encodeURIComponent(message);
+                
+                // فتح واتساب
+                window.open(`https://wa.me/${whatsappNumber}?text=${encodedMessage}`, '_blank');
+            });
+            
+            // تعطيل زر إتمام الطلب في البداية
+            checkoutBtn.disabled = true;
+        });
+    </script>
 </body>
 </html>
